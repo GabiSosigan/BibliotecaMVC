@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/livros")
 public class LivroController {
@@ -40,5 +43,19 @@ public class LivroController {
     public String cadastrarLivro(@ModelAttribute Livro livro, Model model) {
         model.addAttribute("livro", livro);
         return "livros/confirmacao";
+    }
+
+    private List livros = new ArrayList<>();
+
+    @PostMapping("/livros")
+    public String cadastrar(@ModelAttribute Livro livro) {
+        livros.add(livro);
+        return "redirect:/livros";
+    }
+
+    @GetMapping("/livros")
+    public String listar(Model model) {
+        model.addAttribute("livros", livros);
+        return "livros/lista";
     }
 }
