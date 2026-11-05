@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,5 +51,13 @@ public class LivroController {
     public String listar(Model model) {
         model.addAttribute("livros", livros);
         return "livros/lista";
+    }
+
+    @GetMapping("/excluir/{indice}")
+    public String excluir(@PathVariable int indice) {
+        if (indice >= 0 && indice < livros.size()) {
+            livros.remove(indice);
+        }
+        return "redirect:/livros/lista";
     }
 }

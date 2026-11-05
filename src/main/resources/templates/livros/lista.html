@@ -5,13 +5,21 @@
     <title>Prateleira</title>
 </head>
 <body>
-    <h1>Livros Cadastrados:</h1>
-    <table>
-        <tr th:each="livro : ${livros}">
-            <td th:text="${livro.titulo}">Título</td>
-            <td th:text="${livro.autor}">Autor</td>
-            <td th:text="${livro.isbn}">ISBN</td>
-        </tr>
-    </table>
+
+<h1>Livros Cadastrados:</h1>
+
+<a th:href="@{/livros/novo}">Cadastrar novo livro</a>
+
+<table>
+    <tr th:each="livro, status : ${livros}">
+        <td th:text="${livro.titulo}">Título</td>
+        <td th:text="${livro.autor}">Autor</td>
+        <td th:text="${livro.isbn}">ISBN</td>
+        <td>
+            <a th:href="@{/livros/excluir/{indice}(indice=${status.index})}">Excluir</a>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>
