@@ -15,13 +15,15 @@ import java.util.List;
 @RequestMapping("/livros")
 public class LivroController {
 
-    @GetMapping
-    public String inicio(){
+    private List<Livro> livros = new ArrayList<>();
+
+    @GetMapping()
+    public String inicio() {
         return "livros/inicio";
     }
 
     @GetMapping("/livro")
-    public String exibirLivro(Model model){
+    public String exibirLivro(Model model) {
         Livro livro = new Livro();
         livro.setTitulo("Dom Casmurro");
         livro.setAutor("Machado de Assis");
@@ -36,24 +38,15 @@ public class LivroController {
     public String novoLivro(Model model) {
         model.addAttribute("livro", new Livro());
         return "livros/form";
-
     }
 
     @PostMapping()
-    public String cadastrarLivro(@ModelAttribute Livro livro, Model model) {
-        model.addAttribute("livro", livro);
-        return "livros/confirmacao";
-    }
-
-    private List livros = new ArrayList<>();
-
-    @PostMapping("/livros")
-    public String cadastrar(@ModelAttribute Livro livro) {
+    public String cadastrarLivro(@ModelAttribute Livro livro) {
         livros.add(livro);
-        return "redirect:/livros";
+        return "redirect:/livros/lista";
     }
 
-    @GetMapping("/livros")
+    @GetMapping("/lista")
     public String listar(Model model) {
         model.addAttribute("livros", livros);
         return "livros/lista";

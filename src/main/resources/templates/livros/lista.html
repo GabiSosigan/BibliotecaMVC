@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Prateleira</title>
 </head>
 <body>
-
-    <p th:each="livro: ${livros}">Livros</p>
-
+    <h1>Livros Cadastrados:</h1>
+    <table>
+        <tr th:each="livro : ${livros}">
+            <td th:text="${livro.titulo}">Título</td>
+            <td th:text="${livro.autor}">Autor</td>
+            <td th:text="${livro.isbn}">ISBN</td>
+        </tr>
+    </table>
 </body>
 </html>
