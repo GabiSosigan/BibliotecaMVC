@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fichas</title>
+</head>
+<body>
+
+<h1>Autores Cadastrados:</h1>
+
+<a th:href="@{/autores/novo}">Cadastrar novo autor</a>
+
+<table>
+    <tr th:each="autor, status : ${autores}">
+        <td th:text="${autor.nome}">Nome</td>
+        <td th:text="${autor.nacionalidade}">Nacionalidade</td>
+        <td>
+            <a th:href="@{/autores/excluir/{indice}(indice=${status.index})}">Excluir</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
