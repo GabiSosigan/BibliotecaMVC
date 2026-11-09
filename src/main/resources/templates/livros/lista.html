@@ -6,9 +6,7 @@
 </head>
 <body>
 
-<h1>Livros Cadastrados:</h1>
-
-<a th:href="@{/livros/novo}">Cadastrar novo livro</a>
+<h1>Total de livros cadastrados: <span th:text="${livros.size()}">0</span></h1>
 
 <table>
     <tr th:each="livro, status : ${livros}">

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Autores Cadastrados:</h1>
+<h1>Total de autores cadastrados: <span th:text="${autores.size()}">0</span></h1>
 
 <a th:href="@{/autores/novo}">Cadastrar novo autor</a>
 

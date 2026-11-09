@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Categorias</title>
+</head>
+<body>
+
+<h1>Total de categorias cadastradas: <span th:text="${categorias.size()}">0</span></h1>
+
+<a th:href="@{/categorias/novo}">Cadastrar nova categoria</a>
+
+<table>
+  <tr th:each="categoria, status : ${categorias}">
+    <td th:text="${categoria.categoria}">Nome da categoria</td>
+    <td>
+      <a th:href="@{/categorias/excluir/{indice}(indice=${status.index})}">Excluir</a>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
