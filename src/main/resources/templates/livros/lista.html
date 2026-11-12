@@ -14,7 +14,7 @@
         <td th:text="${livro.autor}">Autor</td>
         <td th:text="${livro.isbn}">ISBN</td>
         <td>
-            <a th:href="@{/livros/excluir/{indice}(indice=${status.index})}">Excluir</a>
+            <a th:href="@{/livros/excluir/{id}(id=${livro.id})}">Excluir</a>
         </td>
     </tr>
 </table>

@@ -1,22 +1,22 @@
 package com.biblioteca.biblioteca.controller;
 
 import com.biblioteca.biblioteca.model.Livro;
+import com.biblioteca.biblioteca.repository.LivroRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/livros")
 public class LivroController {
 
-    private List<Livro> livros = new ArrayList<>();
+    private final LivroRepository repository;
+
+    public LivroController(LivroRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping()
     public String inicio() {
@@ -43,21 +43,20 @@ public class LivroController {
 
     @PostMapping()
     public String cadastrarLivro(@ModelAttribute Livro livro) {
-        livros.add(livro);
+        repository.save(livro);
         return "redirect:/livros/lista";
     }
 
     @GetMapping("/lista")
     public String listar(Model model) {
+        List<Livro> livros = repository.findAll();
         model.addAttribute("livros", livros);
         return "livros/lista";
     }
 
-    @GetMapping("/excluir/{indice}")
-    public String excluir(@PathVariable int indice) {
-        if (indice >= 0 && indice < livros.size()) {
-            livros.remove(indice);
-        }
+    @GetMapping("/excluir/{id}")
+    public String excluir(@PathVariable Long id) {
+        repository.deleteById(id);
         return "redirect:/livros/lista";
     }
 }
