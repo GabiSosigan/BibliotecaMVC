@@ -8,13 +8,23 @@
 
 <h1>Total de livros cadastrados: <span th:text="${livros.size()}">0</span></h1>
 
+<a th:href="@{/livros/novo}">Cadastrar novo livro</a>
+
 <table>
-    <tr th:each="livro, status : ${livros}">
+    <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>ISBN</th>
+        <th>Ações</th>
+    </tr>
+    <tr th:each="livro : ${livros}">
         <td th:text="${livro.titulo}">Título</td>
         <td th:text="${livro.autor}">Autor</td>
         <td th:text="${livro.isbn}">ISBN</td>
         <td>
-            <a th:href="@{/livros/excluir/{id}(id=${livro.id})}">Excluir</a>
+            <a th:href="@{/livros/editar/{id}(id=${livro.id})}">Editar</a> |
+            <a th:href="@{/livros/excluir/{id}(id=${livro.id})}"
+               onclick="return confirm('Tem certeza que deseja excluir este livro?')">Excluir</a>
         </td>
     </tr>
 </table>

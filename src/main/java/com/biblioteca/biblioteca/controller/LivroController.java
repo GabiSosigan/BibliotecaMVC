@@ -59,4 +59,12 @@ public class LivroController {
         repository.deleteById(id);
         return "redirect:/livros/lista";
     }
+
+    @GetMapping("/editar/{id}")
+    public String editarLivro(@PathVariable Long id, Model model) {
+        Livro livro = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado: " + id));
+        model.addAttribute("livro", livro);
+        return "livros/form";
+    }
 }

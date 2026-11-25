@@ -2,15 +2,16 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro</title>
+    <title>Livro</title>
 </head>
 <body>
-<h1>Cadastrar Livro</h1>
+<h1 th:text="${livro.id == null} ? 'Cadastrar Livro' : 'Editar Livro'">Cadastrar Livro</h1>
 
 <form th:object="${livro}"
-
-      action="/livros"
+      th:action="@{/livros}"
       method="post">
+
+    <input type="hidden" th:field="*{id}" />
 
     <label>Título:</label>
     <input type="text" th:field="*{titulo}" />
@@ -21,7 +22,7 @@
     <label>ISBN:</label>
     <input type="text" th:field="*{isbn}" />
 
-    <button type="submit">Cadastrar</button>
+    <button type="submit" th:text="${livro.id == null} ? 'Cadastrar' : 'Salvar'">Cadastrar</button>
 
 </form>
 
