@@ -1,22 +1,20 @@
 package com.biblioteca.biblioteca.controller;
 
 import com.biblioteca.biblioteca.model.Categoria;
+import com.biblioteca.biblioteca.repository.CategoriaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/categorias")
 public class CategoriaController {
 
-    private List<Categoria> categorias = new ArrayList<>();
+    private final CategoriaRepository repository;
+
+    public CategoriaController(CategoriaRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping
     public String inicio(){
@@ -26,9 +24,8 @@ public class CategoriaController {
     @GetMapping("/categoria")
     public String exibirCategoria(Model model){
         Categoria categoria = new Categoria();
-        categoria.setCategoria("Terror");
+        categoria.setNome("Terror");
         model.addAttribute("categoria", categoria);
-
         return "categorias/categoria";
     }
 
@@ -36,27 +33,31 @@ public class CategoriaController {
     public String novaCategoria(Model model) {
         model.addAttribute("categoria", new Categoria());
         return "categorias/cadastro";
-
     }
 
-    @PostMapping()
-    public String cadastrarCategoria(@ModelAttribute Categoria categoria, Model model) {
-        categorias.add(categoria);
+    @PostMapping
+    public String cadastrarCategoria(@ModelAttribute Categoria categoria) {
+        repository.save(categoria);
         return "redirect:/categorias/lista";
     }
 
     @GetMapping("/lista")
     public String listar (Model model) {
-        model.addAttribute("categorias", categorias);
-        return "categorias/lista";
+        model.addAttribute("categorias", repository.findAll());
+        return "/categorias/lista";
     }
 
-    @GetMapping("/excluir/{indice}")
-    public String excluir(@PathVariable int indice){
-        if (indice >= 0 && indice < categorias.size()) {
-            categorias.remove(indice);
-        }
+    @GetMapping("/editar/{id}")
+    public String editarCategoria(@PathVariable Long id, Model model) {
+        Categoria categoria = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada: " + id));
+        model.addAttribute("categoria", categoria);
+        return "categorias/cadastro";
+    }
+
+    @GetMapping("/excluir/{id}")
+    public String excluir(@PathVariable Long id) {
+        repository.deleteById(id);
         return "redirect:/categorias/lista";
     }
 }
-

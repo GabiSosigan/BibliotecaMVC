@@ -1,22 +1,20 @@
 package com.biblioteca.biblioteca.controller;
 
 import com.biblioteca.biblioteca.model.Autor;
+import com.biblioteca.biblioteca.repository.AutorRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/autores")
 public class AutorController {
 
-    private List<Autor> autores = new ArrayList<>();
+    private final AutorRepository repository;
+
+    public AutorController(AutorRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping
     public String inicio(){
@@ -28,9 +26,7 @@ public class AutorController {
         Autor autor = new Autor();
         autor.setNome("Nora Sakavic");
         autor.setNacionalidade("Estadunidense");
-
         model.addAttribute("autor", autor);
-
         return "autores/autor";
     }
 
@@ -38,26 +34,31 @@ public class AutorController {
     public String novoAutor(Model model) {
         model.addAttribute("autor", new Autor());
         return "autores/cadastro";
-
     }
 
-    @PostMapping()
-    public String cadastrarAutor(@ModelAttribute Autor autor, Model model) {
-        autores.add(autor);
+    @PostMapping
+    public String cadastrarAutor(@ModelAttribute Autor autor) {
+        repository.save(autor);
         return "redirect:/autores/lista";
     }
 
     @GetMapping("/lista")
     public String listar (Model model) {
-        model.addAttribute("autores", autores);
+        model.addAttribute("autores", repository.findAll());
         return "autores/lista";
     }
 
-    @GetMapping("/excluir/{indice}")
-    public String excluir(@PathVariable int indice){
-        if (indice >= 0 && indice < autores.size()) {
-            autores.remove(indice);
-        }
+    @GetMapping("/editar/{id}")
+    public String editarAutor(@PathVariable Long id, Model model) {
+        Autor autor = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Autor não encontrado: " + id));
+        model.addAttribute("autor", autor);
+        return "autores/cadastro";
+    }
+
+    @GetMapping("/excluir/{id}")
+    public String excluir(@PathVariable Long id) {
+        repository.deleteById(id);
         return "redirect:/autores/lista";
     }
 }

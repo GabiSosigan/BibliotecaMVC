@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Fichas</title>
+    <title>Autores</title>
 </head>
 <body>
 
@@ -11,11 +11,18 @@
 <a th:href="@{/autores/novo}">Cadastrar novo autor</a>
 
 <table>
-    <tr th:each="autor, status : ${autores}">
+    <tr>
+        <th>Nome</th>
+        <th>Nacionalidade</th>
+        <th>Ações</th>
+    </tr>
+    <tr th:each="autor : ${autores}">
         <td th:text="${autor.nome}">Nome</td>
         <td th:text="${autor.nacionalidade}">Nacionalidade</td>
         <td>
-            <a th:href="@{/autores/excluir/{indice}(indice=${status.index})}">Excluir</a>
+            <a th:href="@{/autores/editar/{id}(id=${autor.id})}">Editar</a> |
+            <a th:href="@{/autores/excluir/{id}(id=${autor.id})}"
+               onclick="return confirm('Tem certeza que deseja excluir este autor?')">Excluir</a>
         </td>
     </tr>
 </table>

@@ -11,10 +11,16 @@
 <a th:href="@{/categorias/novo}">Cadastrar nova categoria</a>
 
 <table>
-  <tr th:each="categoria, status : ${categorias}">
-    <td th:text="${categoria.categoria}">Nome da categoria</td>
+  <tr>
+    <th>Categoria</th>
+    <th>Ações</th>
+  </tr>
+  <tr th:each="categoria : ${categorias}">
+    <td th:text="${categoria.nome}">Nome da categoria</td>
     <td>
-      <a th:href="@{/categorias/excluir/{indice}(indice=${status.index})}">Excluir</a>
+      <a th:href="@{/categorias/editar/{id}(id=${categoria.id})}">Editar</a> |
+      <a th:href="@{/categorias/excluir/{id}(id=${categoria.id})}"
+         onclick="return confirm('Tem certeza que deseja excluir esta categoria?')">Excluir</a>
     </td>
   </tr>
 </table>

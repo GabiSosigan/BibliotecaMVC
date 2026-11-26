@@ -2,20 +2,19 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro</title>
+    <title>Categoria</title>
 </head>
 <body>
-<h1>Cadastrar Categoria</h1>
+<h1 th:text="${categoria.id == null} ? 'Cadastrar Categoria' : 'Editar Categoria'">Cadastrar Categoria</h1>
 
-<form th:object="${categoria}"
+<form th:object="${categoria}" th:action="@{/categorias}" method="post">
 
-      action="/categorias"
-      method="post">
+    <input type="hidden" th:field="*{id}" />
 
     <label>Nome da categoria:</label>
-    <input type="text" th:field="*{categoria}" />
+    <input type="text" th:field="*{nome}" />
 
-    <button type="submit">Cadastrar</button>
+    <button type="submit" th:text="${categoria.id == null} ? 'Cadastrar' : 'Salvar'">Cadastrar</button>
 
 </form>
 
